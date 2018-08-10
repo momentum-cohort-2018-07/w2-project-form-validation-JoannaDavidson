@@ -7,6 +7,8 @@ function formSubmit(event) {
   
     var submittedFields = document.querySelectorAll('input');
     var submittedCVV = document.getElementById('cvv');
+    var submittedCarYear = document.getElementById('car-year');
+    var submittedParkingDate = document.getElementById('start-date');
 
     clearError();
     
@@ -24,6 +26,8 @@ function formSubmit(event) {
     }
 
     validateCVV(submittedCVV);
+    validateCarYear(submittedCarYear);
+    validateParkingDate(submittedParkingDate);
 
 }
 
@@ -68,4 +72,38 @@ function validateCVV (submittedCVV) {
   } else {
     submittedCVV.parentElement.classList.add('input-valid');
   }
+}
+
+function validateCarYear (submittedCarYear) {
+    submittedCarYear.parentElement.classList.remove('input-valid');
+    var valueCarYear = submittedCarYear.value.trim();
+    var currentYear = new Date().getFullYear();
+    //Check to see if Car Year is an actual digit number
+    if (isNaN(valueCarYear)) {
+        // -- Change text to say "digits only" --
+        submittedCarYear.parentElement.classList.add('input-invalid');
+    // Check to see if Car Year is greater than 1900
+    } else if (valueCarYear <= 1900){
+        submittedCarYear.parentElement.classList.add('input-invalid');
+    // Check to see if Car Year is greater than current year
+    } else if (valueCarYear > currentYear) {
+        submittedCarYear.parentElement.classList.add('input-invalid');
+    // Ensure four digit year
+    } else if (valueCarYear.length != 4) {
+        submittedCarYear.parentElement.classList.add('input-invalid');
+    } else {
+        submittedCarYear.parentElement.classList.add('input-valid');
+    }
+}
+
+function validateParkingDate (submittedParkingDate) {
+    submittedParkingDate.parentElement.classList.remove('input-valid');
+    var currentDate = new Date();
+    var valueParkingDate = new Date(submittedParkingDate.value);
+    if (valueParkingDate <= currentDate) {
+        submittedParkingDate.parentElement.classList.add('input-invalid');
+    } else {
+        submittedParkingDate.parentElement.classList.add('input-valid');
+    }
+
 }
