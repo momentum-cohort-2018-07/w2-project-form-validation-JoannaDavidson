@@ -9,6 +9,7 @@ function formSubmit(event) {
     var submittedCVV = document.getElementById('cvv');
     var submittedCarYear = document.getElementById('car-year');
     var submittedParkingDate = document.getElementById('start-date');
+    var submittedNumDays = document.getElementById('days');
 
     clearError();
     
@@ -28,6 +29,7 @@ function formSubmit(event) {
     validateCVV(submittedCVV);
     validateCarYear(submittedCarYear);
     validateParkingDate(submittedParkingDate);
+    validateNumDays(submittedNumDays);
 
 }
 
@@ -104,6 +106,22 @@ function validateParkingDate (submittedParkingDate) {
         submittedParkingDate.parentElement.classList.add('input-invalid');
     } else {
         submittedParkingDate.parentElement.classList.add('input-valid');
+    }
+
+}
+
+function validateNumDays (submittedNumDays) {
+    submittedNumDays.parentElement.classList.remove('input-valid');
+    var valueNumDays = submittedNumDays.value.trim();
+    
+    if (isNaN(valueNumDays)) {
+        submittedNumDays.parentElement.classList.add('input-invalid');
+    } else if (valueNumDays < 1 || valueNumDays > 30) {
+        submittedNumDays.parentElement.classList.add('input-invalid');
+    } else if (valueNumDays.isInteger = false) {
+        submittedNumDays.parentElement.classList.add('input-invalid');
+    } else {
+        submittedNumDays.parentElement.classList.add('input-valid');
     }
 
 }
