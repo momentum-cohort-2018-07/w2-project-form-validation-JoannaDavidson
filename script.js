@@ -5,12 +5,11 @@ document.getElementById('parking-form').addEventListener('submit', formSubmit)
 function formSubmit(event) {
     event.preventDefault()
   
-    clearError()
-  
     var submittedFields = document.querySelectorAll('input');
+    var submittedCVV = document.getElementById('cvv');
 
-    // var isEmpty = false;
-
+    clearError();
+    
     //Loop through submittedFields to test for empties.
     for (var fieldTest of submittedFields) {
       // abstracting input of fieldTest to var
@@ -23,6 +22,9 @@ function formSubmit(event) {
         showNonEmptyField(fieldTest)
       }
     }
+
+    validateCVV(submittedCVV);
+
 }
 
 function clearError () {
@@ -35,6 +37,7 @@ function clearError () {
     // if (errorMsg) {
     //   errorMsg.remove()
   }
+
 }
 
   //Creates a div with a class='error-msg' and text.
@@ -50,4 +53,19 @@ function showEmptyFieldError (fieldTest) {
 
 function showNonEmptyField (fieldTest) {
   fieldTest.parentElement.classList.add('input-valid');
+}
+
+// CVV must be three.
+
+function validateCVV (submittedCVV) {
+    submittedCVV.parentElement.classList.remove('input-valid');
+    if (isNaN(submittedCVV.value.trim())) {
+    //   -- Change Text to say "Please enter numbers only" --
+      submittedCVV.parentElement.classList.add('input-invalid');
+  } else if (submittedCVV.value.trim().length != 3) {
+    //   -- Change Text to say "Enter three digits" --
+      submittedCVV.parentElement.classList.add('input-invalid');
+  } else {
+    submittedCVV.parentElement.classList.add('input-valid');
+  }
 }
