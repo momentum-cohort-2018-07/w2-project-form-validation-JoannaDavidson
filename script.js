@@ -11,6 +11,8 @@ function formSubmit(event) {
     var submittedParkingDate = document.getElementById('start-date');
     var submittedNumDays = document.getElementById('days');
 
+    validateCarYear(submittedCarYear);
+
     clearError();
     
     //Loop through submittedFields to test for empties.
@@ -27,7 +29,6 @@ function formSubmit(event) {
     }
 
     validateCVV(submittedCVV);
-    validateCarYear(submittedCarYear);
     validateParkingDate(submittedParkingDate);
     validateNumDays(submittedNumDays);
 
@@ -37,9 +38,11 @@ function clearError () {
   var clearFields = document.querySelectorAll('input')
 
   for (var fieldClear of clearFields) {
-    fieldClear.parentElement.classList.remove('input-invalid', 'input-valid');
-    // same as: field.parentElement.getElementsByClassName('.error-msg')[0]
-    // var errorMsg = field.parentElement.querySelector('.error-msg')
+    fieldClear.closest('.input-field').classList.remove('input-invalid');
+    fieldClear.closest('.input-field').classList.remove('input-valid');
+
+    // same as: field.closest('.input-field').getElementsByClassName('.error-msg')[0]
+    // var errorMsg = field.closest('.input-field').querySelector('.error-msg')
     // if (errorMsg) {
     //   errorMsg.remove()
   }
@@ -48,80 +51,87 @@ function clearError () {
 
   //Creates a div with a class='error-msg' and text.
 function showEmptyFieldError (fieldTest) {
-    // var errorDiv = document.createElement('div')
-  fieldTest.parentElement.classList.add('input-invalid');
-  
-    //Adds the div just created into the div with id of input-field.
-    // var field = document.getElementById('')
-    // field.parentElement.appendChild(errorDiv)
-    // field.classList.add('input-invalid')
+  fieldTest.closest('.input-field').classList.remove('input-valid')
+  fieldTest.closest('.input-field').classList.add('input-invalid');
+
+  var errorMsg = fieldTest.closest('.input-field').querySelector('.isRequired');
+  if (errorMsg) {
+    errorMsg.remove()
+  }
+
+  var errorDiv = document.createElement('div');
+  errorDiv.classList.add('isRequired');
+  errorDiv.innerText = 'is required';
+  fieldTest.closest('.input-field').querySelector('label').insertAdjacentElement('beforeend', errorDiv);  
+
 }
 
 function showNonEmptyField (fieldTest) {
-  fieldTest.parentElement.classList.add('input-valid');
+    fieldTest.closest('.input-field').classList.remove('input-valid')
+    fieldTest.closest('.input-field').classList.add('input-valid');
 }
 
 // CVV must be three.
 
 function validateCVV (submittedCVV) {
-    submittedCVV.parentElement.classList.remove('input-valid');
+    submittedCVV.closest('.input-field').classList.remove('input-valid');
     if (isNaN(submittedCVV.value.trim())) {
     //   -- Change Text to say "Please enter numbers only" --
-      submittedCVV.parentElement.classList.add('input-invalid');
+      submittedCVV.closest('.input-field').classList.add('input-invalid');
   } else if (submittedCVV.value.trim().length != 3) {
     //   -- Change Text to say "Enter three digits" --
-      submittedCVV.parentElement.classList.add('input-invalid');
+      submittedCVV.closest('.input-field').classList.add('input-invalid');
   } else {
-    submittedCVV.parentElement.classList.add('input-valid');
+    submittedCVV.closest('.input-field').classList.add('input-valid');
   }
 }
 
 function validateCarYear (submittedCarYear) {
-    submittedCarYear.parentElement.classList.remove('input-valid');
+    submittedCarYear.closest('.input-field').classList.remove('input-valid');
     var valueCarYear = submittedCarYear.value.trim();
     var currentYear = new Date().getFullYear();
     //Check to see if Car Year is an actual digit number
     if (isNaN(valueCarYear)) {
         // -- Change text to say "digits only" --
-        submittedCarYear.parentElement.classList.add('input-invalid');
+        submittedCarYear.closest('.input-field').classList.add('input-invalid');
     // Check to see if Car Year is greater than 1900
     } else if (valueCarYear <= 1900){
-        submittedCarYear.parentElement.classList.add('input-invalid');
+        submittedCarYear.closest('.input-field').classList.add('input-invalid');
     // Check to see if Car Year is greater than current year
     } else if (valueCarYear > currentYear) {
-        submittedCarYear.parentElement.classList.add('input-invalid');
+        submittedCarYear.closest('.input-field').classList.add('input-invalid');
     // Ensure four digit year
     } else if (valueCarYear.length != 4) {
-        submittedCarYear.parentElement.classList.add('input-invalid');
+        submittedCarYear.closest('.input-field').classList.add('input-invalid');
     } else {
-        submittedCarYear.parentElement.classList.add('input-valid');
+        submittedCarYear.closest('.input-field').classList.add('input-valid');
     }
 }
 
 function validateParkingDate (submittedParkingDate) {
-    submittedParkingDate.parentElement.classList.remove('input-valid');
-    var currentDate = new Date();
+    submittedParkingDate.closest('.input-field').classList.remove('input-valid');
     var valueParkingDate = new Date(submittedParkingDate.value);
-    if (valueParkingDate <= currentDate) {
-        submittedParkingDate.parentElement.classList.add('input-invalid');
+    var currentDate = new Date();
+    if (valueParkingDate <= currentDate || isNaN(valueParkingDate)) {
+        submittedParkingDate.closest('.input-field').classList.add('input-invalid');
     } else {
-        submittedParkingDate.parentElement.classList.add('input-valid');
+        submittedParkingDate.closest('.input-field').classList.add('input-valid');
     }
 
 }
 
 function validateNumDays (submittedNumDays) {
-    submittedNumDays.parentElement.classList.remove('input-valid');
+    submittedNumDays.closest('.input-field').classList.remove('input-valid');
     var valueNumDays = submittedNumDays.value.trim();
     
     if (isNaN(valueNumDays)) {
-        submittedNumDays.parentElement.classList.add('input-invalid');
+        submittedNumDays.closest('.input-field').classList.add('input-invalid');
     } else if (valueNumDays < 1 || valueNumDays > 30) {
-        submittedNumDays.parentElement.classList.add('input-invalid');
+        submittedNumDays.closest('.input-field').classList.add('input-invalid');
     } else if (valueNumDays.isInteger = false) {
-        submittedNumDays.parentElement.classList.add('input-invalid');
+        submittedNumDays.closest('.input-field').classList.add('input-invalid');
     } else {
-        submittedNumDays.parentElement.classList.add('input-valid');
+        submittedNumDays.closest('.input-field').classList.add('input-valid');
     }
 
 }
