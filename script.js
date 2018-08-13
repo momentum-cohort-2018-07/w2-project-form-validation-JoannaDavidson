@@ -10,6 +10,8 @@ function formSubmit(event) {
     var submittedCarYear = document.getElementById('car-year');
     var submittedParkingDate = document.getElementById('start-date');
     var submittedNumDays = document.getElementById('days');
+    var totalField = document.getElementById('total');
+    // var valueNumDays = submittedNumDays.value.trim();
 
     validateCarYear(submittedCarYear);
 
@@ -31,6 +33,7 @@ function formSubmit(event) {
     validateCVV(submittedCVV);
     validateParkingDate(submittedParkingDate);
     validateNumDays(submittedNumDays);
+    calculateTotal(totalField);
 
 }
 
@@ -41,10 +44,6 @@ function clearError () {
     fieldClear.closest('.input-field').classList.remove('input-invalid');
     fieldClear.closest('.input-field').classList.remove('input-valid');
 
-    // same as: field.closest('.input-field').getElementsByClassName('.error-msg')[0]
-    // var errorMsg = field.closest('.input-field').querySelector('.error-msg')
-    // if (errorMsg) {
-    //   errorMsg.remove()
   }
 
 }
@@ -69,6 +68,12 @@ function showEmptyFieldError (fieldTest) {
 function showNonEmptyField (fieldTest) {
     fieldTest.closest('.input-field').classList.remove('input-valid')
     fieldTest.closest('.input-field').classList.add('input-valid');
+
+    var errorMsg = fieldTest.closest('.input-field').querySelector('.isRequired');
+    if (errorMsg) {
+      errorMsg.remove()
+    }
+  
 }
 
 // CVV must be three.
@@ -122,7 +127,6 @@ function validateParkingDate (submittedParkingDate) {
 
 function validateNumDays (submittedNumDays) {
     submittedNumDays.closest('.input-field').classList.remove('input-valid');
-    var valueNumDays = submittedNumDays.value.trim();
     
     if (isNaN(valueNumDays)) {
         submittedNumDays.closest('.input-field').classList.add('input-invalid');
@@ -135,3 +139,15 @@ function validateNumDays (submittedNumDays) {
     }
 
 }
+
+// Starting to do step 4. Think I see how, but will need more work.
+// function calculateTotal (totalField) {
+//     // if (document.querySelectorAll('.input-field').classList.contains('input-invalid')) {
+//         totalField.innerText = '';
+//     // }
+    
+//     for (var index = 1; index <= valueNumDays; index++) {
+//         var arrayParkingDays = 
+//     }
+    
+// }
